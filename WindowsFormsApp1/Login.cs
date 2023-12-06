@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,6 +18,9 @@ namespace WindowsFormsApp1
         public Login()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.AcceptButton = btnLogin;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -28,7 +32,8 @@ namespace WindowsFormsApp1
             SqlDataReader reader = sqlcommand.ExecuteReader();
             if (reader.Read())
             {
-                MessageBox.Show("Giriş Başarılı");
+                MessageBox.Show("Giriş Başarılı! Yönlendiriliyorsunuz","Giriş Başarılı!",MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Thread.Sleep(2000);
                 StudentControl studentControl = new StudentControl();
                 studentControl.Show();
                 this.Hide();

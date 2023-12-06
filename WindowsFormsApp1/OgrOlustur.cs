@@ -11,11 +11,12 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
-    public partial class OgrenciOlustur : Form
+    public partial class OgrOlustur : Form
     {
-        public OgrenciOlustur()
+        public OgrOlustur()
         {
             InitializeComponent();
+            this.AcceptButton = btnOgrenciOlustur;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -35,7 +36,6 @@ namespace WindowsFormsApp1
 
                 MessageBox.Show("Öğrenci oluşturulamadı!" + ex.Message);
             }
-
         }
     }
 }

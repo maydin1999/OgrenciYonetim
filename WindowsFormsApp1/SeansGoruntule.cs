@@ -21,32 +21,34 @@ namespace WindowsFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            lblSeansTarih.Visible = true;
-            cmbSeansTarih.Visible = true;
-            DatabaseFunctions databaseFunctions = new DatabaseFunctions();
-            SqlCommand command = new SqlCommand("SELECT seansTarihi From seans Where seansOgrenciAdi=@param1 ORDER BY seansTarihi", databaseFunctions.DatabaseOpen());
-            command.Parameters.AddWithValue("@param1", cmbOgrenciAdi.Text);
-            SqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
+            try
             {
-                if (reader[0] is DateTime)
+                if (cmbOgrenciAdi.SelectedItem != null && cmbSeansTarih.SelectedItem != null) 
                 {
-                    DateTime seansTarihi = (DateTime)reader[0];
+                    // Fonksiyon Seans Notları,Ders Programı ve Sonraki Seansta Yapılacakları Çeker.
+                    DatabaseFunctions databaseFunctions = new DatabaseFunctions();
+                    SqlCommand cmdArama = new SqlCommand("SELECT seansNotlari,seansdersProgrami,seansSonraki FROM seans WHERE seansOgrenciAdi = @param1 and seansTarihi = @param2", databaseFunctions.DatabaseOpen());
+                    cmdArama.Parameters.AddWithValue("@param1", cmbOgrenciAdi.SelectedItem.ToString());
+                    cmdArama.Parameters.AddWithValue("@param2", Convert.ToDateTime(cmbSeansTarih.SelectedItem));
+                    SqlDataReader aramaReader = cmdArama.ExecuteReader();
+                    while (aramaReader.Read())
+                    {
+                        rchSeansNotlari.AppendText(aramaReader[0].ToString());
+                        rchDersProgrami.AppendText(aramaReader[1].ToString());
+                        rchSonrakiDers.AppendText(aramaReader[2].ToString());
+                    }
 
-                    // Gün, ay, yıl formatında biçimlendirme
-                    string formattedDate = seansTarihi.ToString("dd/MM/yyyy");
-
-                    cmbSeansTarih.Items.Add(formattedDate);
-
-                    // Eğer bir varsayılan seçili değer istiyorsanız, bu satırı ekleyebilirsiniz
-                    cmbSeansTarih.SelectedIndex = 0;
+                }
+                else
+                {
+                    MessageBox.Show("Seçtiğiniz bilgiler boş!");
                 }
             }
-            //while (reader.Read())
-            //{
-            //    cmbSeansTarih.Items.Add(reader[0]);
-            //    cmbSeansTarih.SelectedItem = reader[0];
-            //}
+            catch (Exception ex)
+            { 
+                MessageBox.Show("Hata bulundu:" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
 
         private void OgrenciCek()
@@ -58,6 +60,46 @@ namespace WindowsFormsApp1
             {
                 cmbOgrenciAdi.Items.Add(reader[0]);
             }
+        }
+
+        private void cmbOgrenciAdi_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DatabaseFunctions databaseFunctions = new DatabaseFunctions();
+            SqlCommand command = new SqlCommand("SELECT seansTarihi From seans Where seansOgrenciAdi=@param1 ORDER BY seansTarihi", databaseFunctions.DatabaseOpen());
+            command.Parameters.AddWithValue("@param1", cmbOgrenciAdi.Text);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                if (reader[0] is DateTime)
+                {
+                    DateTime seansTarihi = (DateTime)reader[0];
+                    cmbSeansTarih.Items.Add(seansTarihi);
+                    cmbSeansTarih.FormatString = "dd/MM/yyyy";
+
+
+                    // Gün, ay, yıl formatında biçimlendirme
+                    //string formattedDate = seansTarihi.ToString("dd/MM/yyyy");
+
+                    //cmbSeansTarih.Items.Add(formattedDate);
+
+                    // Eğer bir varsayılan seçili değer istiyorsanız, bu satırı ekleyebilirsiniz
+                    cmbSeansTarih.SelectedIndex = 0;
+                }
+            }
+            ////////////////////////////////////////////////////////////
+            /*SqlCommand command2 = new SqlCommand("SELECT ogrenciSinif From ogrenciBilgi Where ogrenciAdi=@param1", databaseFunctions.DatabaseOpen());
+            command2.Parameters.AddWithValue("@param1", cmbOgrenciAdi.SelectedItem.ToString());
+            SqlDataReader reader2 = command2.ExecuteReader();
+            while (reader2.Read())
+            {
+                cmbOgrenciSinif.Items.Add(reader2[0]);
+            }
+            */
+        }
+
+        public static implicit operator SeansGoruntule(SeansOlustur v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

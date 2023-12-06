@@ -15,11 +15,13 @@ namespace WindowsFormsApp1
         public StudentControl()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.StartPosition = FormStartPosition.CenterScreen;
         }
 
         private void btnOgrenciOlustur_Click(object sender, EventArgs e)
         {
-            OgrenciOlustur ogrenciOlustur = new OgrenciOlustur();
+            OgrOlustur ogrenciOlustur = new OgrOlustur();
             ogrenciOlustur.Show();
         }
 
@@ -30,6 +32,18 @@ namespace WindowsFormsApp1
         }
 
         private void btnSeansGor_Click(object sender, EventArgs e)
+        {
+            SeansGoruntule seansGoruntule = new SeansGoruntule();
+            seansGoruntule.Show();
+        }
+
+        private void btnOgrenciDuzenle_Click(object sender, EventArgs e)
+        {
+            OgrenciDuzenleme ogrenciDuzenle = new OgrenciDuzenleme();
+            ogrenciDuzenle.Show();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
         {
 
         }

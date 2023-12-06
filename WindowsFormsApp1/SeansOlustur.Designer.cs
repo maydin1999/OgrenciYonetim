@@ -204,6 +204,7 @@
             // cmbOgrenciID
             // 
             this.cmbOgrenciID.AllowDrop = true;
+            this.cmbOgrenciID.Enabled = false;
             this.cmbOgrenciID.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
             this.cmbOgrenciID.FormattingEnabled = true;
             this.cmbOgrenciID.ImeMode = System.Windows.Forms.ImeMode.On;
